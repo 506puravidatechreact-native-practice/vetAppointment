@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, Text, StyleSheet, FlatList} from 'react-native';
+import {Text, StyleSheet, FlatList, View} from 'react-native';
 
 import Appointment from './src/component/Appointment';
 import ApplicationForm from './src/component/ApplicationForm';
@@ -19,7 +19,7 @@ const App = () => {
   };
 
   return (
-    <ScrollView style={styles.view}>
+    <View style={styles.view}>
       <Text style={styles.title}>Vet Appointment Manager</Text>
 
       <ApplicationForm />
@@ -44,13 +44,13 @@ const App = () => {
           <Text>{appointment.patient}</Text>
         </View>
       ))} */}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: '#2ECC71',
+    backgroundColor: '#4169E1',
     //minHeight: '100%',
     flex: 1,
     //paddingHorizontal: 10,
