@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    marginHorizontal: '1.5%',
   },
   label: {
     fontWeight: 'bold',

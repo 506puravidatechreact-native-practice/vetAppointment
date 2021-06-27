@@ -19,51 +19,50 @@ const App = () => {
   };
 
   return (
-    <View style={styles.view}>
+    <View style={styles.container}>
       <Text style={styles.title}>Vet Appointment Manager</Text>
 
-      <ApplicationForm />
+      <View style={styles.content}>
+        <ApplicationForm />
 
-      <Text style={styles.title}>
-        {appointments.length > 0
-          ? 'Manage Your Appointments'
-          : 'There are no appointments, You add an appointment'}
-      </Text>
+        <Text style={styles.title}>
+          {appointments.length > 0
+            ? 'Manage Your Appointments'
+            : 'There are no appointments, You add an appointment'}
+        </Text>
 
-      <FlatList
-        data={appointments}
-        renderItem={({item}) => (
-          <Appointment item={item} deletePatient={deletePatient} />
-        )}
-        keyExtractor={appointment => appointment.id}
-      />
-
-      {/*
-      {appointments.map(appointment => (
-        <View>
-          <Text>{appointment.patient}</Text>
-        </View>
-      ))} */}
+        <FlatList
+          style={styles.list}
+          data={appointments}
+          renderItem={({item}) => (
+            <Appointment item={item} deletePatient={deletePatient} />
+          )}
+          keyExtractor={appointment => appointment.id}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {
+  container: {
     backgroundColor: '#4169E1',
-    //minHeight: '100%',
     flex: 1,
-    //paddingHorizontal: 10,
-    //marginHorizontal: 10,
   },
   title: {
     color: '#FFF',
-    marginTop: 20,
-    padding: 20,
-    //marginBottom: 20,
-    fontSize: 20,
+    marginTop: 40,
+    marginBottom: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  content: {
+    flex: 1,
+    marginHorizontal: '2.5%',
+  },
+  list: {
+    flex: 1,
   },
 });
 
