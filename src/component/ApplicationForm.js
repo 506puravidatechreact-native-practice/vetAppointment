@@ -10,8 +10,13 @@ import {
   ScrollView,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import shortid from 'shortid';
 
-const ApplicationForm = () => {
+const ApplicationForm = ({
+  appointments,
+  setAppointments,
+  setApplicationForm,
+}) => {
   const [patient, setPatient] = useState('');
   const [owner, setOwner] = useState('');
   const [mobilePhone, setMobilePnohe] = useState('');
@@ -55,18 +60,32 @@ const ApplicationForm = () => {
 
   const createNewAppointment = () => {
     if (
-      patient.trim() == '' ||
-      owner.trim() == '' ||
-      mobilePhone.trim() == '' ||
-      date.trim() == '' ||
-      time.trim() == '' ||
-      symptoms.trim() == ''
+      patient.trim() === '' ||
+      owner.trim() === '' ||
+      mobilePhone.trim() === '' ||
+      date.trim() === '' ||
+      time.trim() === '' ||
+      symptoms.trim() === ''
     ) {
       showErrorDialog();
       //console.log('something wrong happens');
       return null;
     }
     console.log('creating new Appointment');
+
+    const appointment = {patient, owner, mobilePhone, date, time, symptoms};
+
+    appointment.id = shortid.generate();
+    //console.log(appointment);
+
+    //Add new appointment, creating duplicate of appoinments with the new appoint create above
+    const newAppointment = [...appointments, appointment];
+    setAppointments(newAppointment);
+
+    // hide Application Form
+    setApplicationForm(false);
+
+    //reset form
   };
 
   // Message to show the error
@@ -138,7 +157,6 @@ const ApplicationForm = () => {
             style={styles.input}
             onChangeText={text => setSymptoms(text)}
             //onChangeText={text => console.log(text)}
-            keyboardType="numeric"
           />
         </View>
         <View>
@@ -162,11 +180,11 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     fontSize: 18,
-    marginTop: 20,
+    marginTop: 15,
   },
   input: {
     marginTop: 10,
-    height: 40,
+    height: 30,
     borderColor: '#e1e1e1',
     borderWidth: 1,
     borderStyle: 'solid',

@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e1e1e1',
     borderStyle: 'solid',
     borderBottomWidth: 2,
-    //paddingVertical: 10,
-    //paddingHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   label: {
     fontWeight: 'bold',
     fontSize: 14,
-    marginTop: 20,
+    marginTop: 10,
   },
   text: {
     fontSize: 14,

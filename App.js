@@ -5,18 +5,17 @@ import {
   FlatList,
   View,
   TouchableHighlight,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 
 import Appointment from './src/component/Appointment';
 import ApplicationForm from './src/component/ApplicationForm';
 
 const App = () => {
-  const [showApplicationForm, setApplicationForm] = useState(true);
+  const [showApplicationForm, setApplicationForm] = useState(false);
 
-  const showHiddeForm = () => {
-    console.log('show / Hide Form');
-    setApplicationForm(!showApplicationForm);
-  };
   //define the state appointments
   const [appointments, setAppointments] = useState([
     {id: '1', patient: 'Hook', owner: 'Juan', symptoms: 'fever'},
@@ -30,39 +29,62 @@ const App = () => {
     });
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Vet Appointment Manager</Text>
-      <View>
-        <TouchableHighlight
-          onPress={() => showHiddeForm()}
-          style={styles.btnShowForm}>
-          <Text style={styles.textShowForm}>Show Form &gt;&gt;</Text>
-        </TouchableHighlight>
-      </View>
+  const showHiddeForm = () => {
+    console.log('show / Hide Form');
+    setApplicationForm(!showApplicationForm);
+  };
 
-      <View style={styles.content}>
-        {showApplicationForm ? (
-          <ApplicationForm />
-        ) : (
-          <View>
-            <Text style={styles.title}>
-              {appointments.length > 0
-                ? 'Manage Your Appointments'
-                : 'There are no appointments, You add an appointment'}
+  const closeKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={() => closeKeyboard()}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Vet Appointment Manager</Text>
+        <View>
+          <TouchableHighlight
+            onPress={() => showHiddeForm()}
+            style={styles.btnShowForm}>
+            <Text style={styles.textShowForm}>
+              {showApplicationForm
+                ? 'List of Appoinments'
+                : 'Create New Appoinment'}
             </Text>
-            <FlatList
-              style={styles.list}
-              data={appointments}
-              renderItem={({item}) => (
-                <Appointment item={item} deletePatient={deletePatient} />
-              )}
-              keyExtractor={appointment => appointment.id}
-            />
-          </View>
-        )}
+          </TouchableHighlight>
+        </View>
+
+        <View style={styles.content}>
+          {showApplicationForm ? (
+            <>
+              <Text style={styles.title}>Create a new Appointment</Text>
+              <ApplicationForm
+                appointments={appointments}
+                setAppointments={setAppointments}
+                setApplicationForm={setApplicationForm}
+              />
+            </>
+          ) : (
+            // Must be a fragment to get the right functionality
+            <>
+              <Text style={styles.title}>
+                {appointments.length > 0
+                  ? 'Manage Your Appointments'
+                  : 'There are no appointments, You add an appointment'}
+              </Text>
+              <FlatList
+                style={styles.list}
+                data={appointments}
+                renderItem={({item}) => (
+                  <Appointment item={item} deletePatient={deletePatient} />
+                )}
+                keyExtractor={appointment => appointment.id}
+              />
+            </>
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -73,9 +95,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#FFF',
-    marginTop: 40,
+    marginTop: Platform.OS === 'ios' ? 40 : 20, // This is in case no use iphone
     marginBottom: 20,
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
