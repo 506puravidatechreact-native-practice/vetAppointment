@@ -1,10 +1,22 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, FlatList, View} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  FlatList,
+  View,
+  TouchableHighlight,
+} from 'react-native';
 
 import Appointment from './src/component/Appointment';
 import ApplicationForm from './src/component/ApplicationForm';
 
 const App = () => {
+  const [showApplicationForm, setApplicationForm] = useState(true);
+
+  const showHiddeForm = () => {
+    console.log('show / Hide Form');
+    setApplicationForm(!showApplicationForm);
+  };
   //define the state appointments
   const [appointments, setAppointments] = useState([
     {id: '1', patient: 'Hook', owner: 'Juan', symptoms: 'fever'},
@@ -21,24 +33,34 @@ const App = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Vet Appointment Manager</Text>
+      <View>
+        <TouchableHighlight
+          onPress={() => showHiddeForm()}
+          style={styles.btnShowForm}>
+          <Text style={styles.textShowForm}>Show Form &gt;&gt;</Text>
+        </TouchableHighlight>
+      </View>
 
       <View style={styles.content}>
-        <ApplicationForm />
-
-        <Text style={styles.title}>
-          {appointments.length > 0
-            ? 'Manage Your Appointments'
-            : 'There are no appointments, You add an appointment'}
-        </Text>
-
-        <FlatList
-          style={styles.list}
-          data={appointments}
-          renderItem={({item}) => (
-            <Appointment item={item} deletePatient={deletePatient} />
-          )}
-          keyExtractor={appointment => appointment.id}
-        />
+        {showApplicationForm ? (
+          <ApplicationForm />
+        ) : (
+          <View>
+            <Text style={styles.title}>
+              {appointments.length > 0
+                ? 'Manage Your Appointments'
+                : 'There are no appointments, You add an appointment'}
+            </Text>
+            <FlatList
+              style={styles.list}
+              data={appointments}
+              renderItem={({item}) => (
+                <Appointment item={item} deletePatient={deletePatient} />
+              )}
+              keyExtractor={appointment => appointment.id}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -63,6 +85,17 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+  },
+  btnShowForm: {
+    padding: 10,
+    backgroundColor: '#9370DB',
+    marginVertical: 10,
+  },
+  textShowForm: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 14,
   },
 });
 
